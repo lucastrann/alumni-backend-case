@@ -23,9 +23,9 @@ public interface UsersMapper {
     // @Mapping(target = "posts", qualifiedByName = "postsToPostId")
     // @Mapping(target = "posted", qualifiedByName = "postsToPostId")
     @Mapping(target = "groups", qualifiedByName = "groupsToGroupsId")
-    @Mapping(target = "topics", qualifiedByName = "topicsToTopicsId")
-    @Mapping(target = "createdAt", source = "createdAt")
-    @Mapping(target = "updatedAt", source = "updatedAt")
+    //@Mapping(target = "topics", qualifiedByName = "topicsToTopicsId")
+    //@Mapping(target = "createdAt", source = "createdAt")
+    //@Mapping(target = "updatedAt", source = "updatedAt")
     UsersDTO usersToUsersDTO(Users users);
 
     Collection<UsersDTO> usersToUsersDTO(Collection<Users> users);

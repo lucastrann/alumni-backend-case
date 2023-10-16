@@ -15,7 +15,6 @@ import no.noroff.alumni.services.users.UsersService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -23,7 +22,6 @@ import java.security.Principal;
 import java.util.Base64;
 import java.util.Collection;
 
-@PreAuthorize("hasRole('USER')")
 @RestController
 @RequestMapping(path = "api/v1/user")
 public class UsersController {
@@ -65,9 +63,9 @@ public class UsersController {
                     content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             array = @ArraySchema(schema = @Schema(implementation = UsersDTO.class)))})
     })
-    public ResponseEntity<UsersDTO> findCurrentUser(Principal principal) {
+    public ResponseEntity<UsersDTO> findCurrentUser() {
         // TODO Make this 303 See Other
-        String id = principal.getName();
+        String id = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
         return ResponseEntity.ok(usersMapper.usersToUsersDTO(usersService.findById(id)));
     }
 
@@ -76,9 +74,9 @@ public class UsersController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content = @Content)
     })
-    public ResponseEntity<UsersDTO> add(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, Principal principal) {
-        String id = principal.getName();
-        String name = getNameFromToken(token);
+    public ResponseEntity<UsersDTO> add() {
+        String id = "10";
+        String name = "new user";
 
         Users user = new Users();
         user.setId(id);

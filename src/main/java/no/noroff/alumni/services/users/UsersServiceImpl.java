@@ -1,5 +1,6 @@
 package no.noroff.alumni.services.users;
 
+import no.noroff.alumni.expections.UserNotFoundException;
 import no.noroff.alumni.models.Users;
 import no.noroff.alumni.repositories.UsersRepository;
 import org.springframework.stereotype.Service;
