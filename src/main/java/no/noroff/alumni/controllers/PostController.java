@@ -1,4 +1,4 @@
-package no.noroff.alumni.controllers;
+/*package no.noroff.alumni.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -241,4 +241,4 @@ public class PostController {
         Post post = postService.findById(id);
         return ResponseEntity.ok(postMapper.postToPostDTO(post.getReplies()));
     }
-}
+}*/

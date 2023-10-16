@@ -1,4 +1,4 @@
-package no.noroff.alumni.mappers;
+/*package no.noroff.alumni.mappers;
 
 import no.noroff.alumni.models.Groups;
 import no.noroff.alumni.models.Post;
@@ -115,4 +115,4 @@ public abstract class PostMapper {
                 .map(Post::getId)
                 .collect(Collectors.toSet());
     }
-}
+}*/

@@ -28,4 +28,11 @@ public class Post {
     private Post replyParentId;
     @OneToMany(mappedBy = "replyParentId")
     private Set<Post> replies;
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private Users targetUser;
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Groups targetGroup;
+
 }
