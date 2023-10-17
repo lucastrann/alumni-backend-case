@@ -53,7 +53,7 @@ public class GroupController {
     public ResponseEntity<GroupDTO> findById( @PathVariable int id) {
         if (!groupService.exists(id))
             return ResponseEntity.notFound().build();
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         GroupDTO group = groupMapper.groupToGroupDTO(groupService.findByIdWhereUserHasAccess(userId, id));
         if (group == null)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -68,7 +68,7 @@ public class GroupController {
                             array = @ArraySchema(schema = @Schema(implementation = GroupDTO.class)))})
     })
     public ResponseEntity<Collection<GroupDTO>> findAll( @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         return ResponseEntity.ok(groupMapper.groupToGroupDTO(
                 groupService.searchResultsWithLimitOffset(userId, search.orElse("").toLowerCase(), offset.orElse(0), limit.orElse(99999999))));
     }
@@ -80,7 +80,7 @@ public class GroupController {
     })
     public ResponseEntity<Object> add(@RequestBody GroupPostDTO entity) {
         Groups group = groupMapper.groupPostDTOToGroup(entity);
-        String id = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String id = "lucas";
         Set<Users> user = new HashSet<>();
         user.add(usersService.findById(id));
         group.setUsers(user);
@@ -99,7 +99,7 @@ public class GroupController {
     public ResponseEntity<Object> update( @RequestBody GroupPutDTO entity, @PathVariable int id) {
         if (!groupService.exists(id))
             return ResponseEntity.badRequest().build();
-        if (!groupService.checkIfUserInGroup("9e8ae4c6-7901-4ce3-b562-395fc411e006", id))
+        if (!groupService.checkIfUserInGroup("lucas", id))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Groups group = groupMapper.groupPutDTOToGroup(entity);
         Groups oldGroup = groupService.findById(id);
@@ -121,12 +121,12 @@ public class GroupController {
 
         boolean privateGroup = groupService.findById(id).isPrivate();
         if (privateGroup) {
-            if (!groupService.checkIfUserInGroup("9e8ae4c6-7901-4ce3-b562-395fc411e006", id))
+            if (!groupService.checkIfUserInGroup("lucas", id))
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         String userId = user.orElse("");
         if (userId.equals("")) {
-            userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+            userId = "lucas";
         }
         groupService.addUserToGroup(userId, id);
         return ResponseEntity.noContent().build();
@@ -143,7 +143,7 @@ public class GroupController {
         if (!groupService.exists(id))
             return ResponseEntity.badRequest().build();
 
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         groupService.removeUserFromGroup(userId, id);
         return ResponseEntity.noContent().build();
     }
@@ -157,7 +157,7 @@ public class GroupController {
             @ApiResponse(responseCode = "404", description = "Group not found", content = @Content)
     })
     public ResponseEntity<Collection<GroupDTO>> findGroupsForAUser() {
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         return ResponseEntity.ok(groupMapper.groupToGroupDTO(groupService.findGroupsWithUser(userId)));
     }
 

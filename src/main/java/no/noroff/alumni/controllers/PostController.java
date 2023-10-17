@@ -16,7 +16,7 @@ import no.noroff.alumni.services.users.UsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -24,7 +24,7 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.Optional;
 
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 @RestController
 @RequestMapping(path = "api/v1/post")
 public class PostController {
@@ -48,11 +48,11 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
 
     })
-    public ResponseEntity<PostDTO> findById(Principal principal, @PathVariable int id) {
+    public ResponseEntity<PostDTO> findById( @PathVariable int id) {
 
         Post post = postService.findById(id);
-        String userId = principal.getName();
-        if (post.getPostTarget().equals("USER") && (post.getTargetUser().getId().equals(userId) || post.getSenderId().getId().equals(userId)))
+        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        /*if (post.getPostTarget().equals("USER") && (post.getTargetUser().getId().equals(userId) || post.getSenderId().getId().equals(userId)))
             return ResponseEntity.ok(postMapper.postToPostDTO(post));
         if (post.getPostTarget().equals("GROUP") && (!post.getTargetGroup().isPrivate() || post.getTargetGroup().getUsers().contains(usersService.findById(userId))))
             return ResponseEntity.ok(postMapper.postToPostDTO(post));
@@ -87,10 +87,10 @@ public class PostController {
             @ApiResponse(responseCode = "403", description = "Access denied to the post", content = @Content),
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
     })
-    public ResponseEntity<Object> update(Principal principal, @RequestBody PostPutDTO entity, @PathVariable int id) {
+    public ResponseEntity<Object> update( @RequestBody PostPutDTO entity, @PathVariable int id) {
         if (!postService.exists(id))
             return ResponseEntity.badRequest().build();
-        if (postService.findById(id).getSenderId().getId().equals(principal.getName()))
+        if (postService.findById(id).getSenderId().getId().equals("9e8ae4c6-7901-4ce3-b562-395fc411e006"))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Post post = postMapper.postPutDTOToPost(entity);
@@ -101,7 +101,6 @@ public class PostController {
         post.setReplies(oldPost.getReplies());
         post.setOrigin(oldPost.getOrigin());
         post.setTargetUser(oldPost.getTargetUser());
-        post.setTargetTopic(oldPost.getTargetTopic());
         post.setTargetGroup(oldPost.getTargetGroup());
 
         postService.update(post);
@@ -173,8 +172,8 @@ public class PostController {
                             array = @ArraySchema(schema = @Schema(implementation = PostDTO.class)))),
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
-    public ResponseEntity<Collection<PostDTO>> findAllPostsToAUser(Principal principal, @PathVariable String senderId, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = principal.getName();
+    public ResponseEntity<Collection<PostDTO>> findAllPostsToAUser( @PathVariable String senderId, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
+        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
@@ -189,8 +188,8 @@ public class PostController {
                             array = @ArraySchema(schema = @Schema(implementation = PostDTO.class)))),
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
-    public ResponseEntity<Collection<PostDTO>> findPostsUserIsSubscribedTo(Principal principal, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = principal.getName();
+    public ResponseEntity<Collection<PostDTO>> findPostsUserIsSubscribedTo( @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
+        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
@@ -205,8 +204,8 @@ public class PostController {
                             array = @ArraySchema(schema = @Schema(implementation = PostDTO.class)))),
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
-    public ResponseEntity<Collection<PostDTO>> findPostInTopicUserIsSubscribedTo(Principal principal, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = principal.getName();
+    public ResponseEntity<Collection<PostDTO>> findPostInTopicUserIsSubscribedTo( @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
+        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
@@ -221,8 +220,8 @@ public class PostController {
                             array = @ArraySchema(schema = @Schema(implementation = PostDTO.class)))),
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
-    public ResponseEntity<Collection<PostDTO>> findPostInGroupUserIsSubscribedTo(Principal principal, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = principal.getName();
+    public ResponseEntity<Collection<PostDTO>> findPostInGroupUserIsSubscribedTo( @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
+        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);

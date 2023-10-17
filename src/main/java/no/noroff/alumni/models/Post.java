@@ -24,6 +24,11 @@ public class Post {
     @JoinColumn(name = "owner_id")
     private Users senderId;
     @ManyToOne
+    @JoinColumn(name = "origin_id")
+    private Post origin;
+    @OneToMany(mappedBy = "origin")
+    private Set<Post> thread;
+    @ManyToOne
     @JoinColumn(name = "parent_id")
     private Post replyParentId;
     @OneToMany(mappedBy = "replyParentId")

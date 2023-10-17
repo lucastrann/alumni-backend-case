@@ -65,7 +65,7 @@ public class UsersController {
     })
     public ResponseEntity<UsersDTO> findCurrentUser() {
         // TODO Make this 303 See Other
-        String id = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String id = "lucas";
         return ResponseEntity.ok(usersMapper.usersToUsersDTO(usersService.findById(id)));
     }
 
