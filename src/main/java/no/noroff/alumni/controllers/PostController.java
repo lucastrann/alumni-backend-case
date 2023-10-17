@@ -1,4 +1,4 @@
-/*package no.noroff.alumni.controllers;
+package no.noroff.alumni.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -48,18 +48,19 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
 
     })
-    public ResponseEntity<PostDTO> findById( @PathVariable int id) {
+    public ResponseEntity<PostDTO> findById(Principal principal, @PathVariable int id) {
 
         Post post = postService.findById(id);
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         /*if (post.getPostTarget().equals("USER") && (post.getTargetUser().getId().equals(userId) || post.getSenderId().getId().equals(userId)))
-            return ResponseEntity.ok(postMapper.postToPostDTO(post));
         if (post.getPostTarget().equals("GROUP") && (!post.getTargetGroup().isPrivate() || post.getTargetGroup().getUsers().contains(usersService.findById(userId))))
             return ResponseEntity.ok(postMapper.postToPostDTO(post));
         if (post.getPostTarget().equals("TOPIC"))
             return ResponseEntity.ok(postMapper.postToPostDTO(post));
+            */
+        return ResponseEntity.ok(postMapper.postToPostDTO(post));
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+       // return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @PostMapping
@@ -87,20 +88,23 @@ public class PostController {
             @ApiResponse(responseCode = "403", description = "Access denied to the post", content = @Content),
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content)
     })
-    public ResponseEntity<Object> update( @RequestBody PostPutDTO entity, @PathVariable int id) {
+    public ResponseEntity<Object> update(Principal principal, @RequestBody PostPutDTO entity, @PathVariable int id) {
         if (!postService.exists(id))
             return ResponseEntity.badRequest().build();
-        if (postService.findById(id).getSenderId().getId().equals("9e8ae4c6-7901-4ce3-b562-395fc411e006"))
+        if (postService.findById(id).getSenderId().getId().equals("lucas"))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
         Post post = postMapper.postPutDTOToPost(entity);
         post.setId(id);
         Post oldPost = postService.findById(id);
+        post.setCreatedAt(oldPost.getCreatedAt());
+        post.setPostTarget(oldPost.getPostTarget());
         post.setSenderId(oldPost.getSenderId());
         post.setReplyParentId(oldPost.getReplyParentId());
         post.setReplies(oldPost.getReplies());
         post.setOrigin(oldPost.getOrigin());
         post.setTargetUser(oldPost.getTargetUser());
+        //post.setTargetTopic(oldPost.getTargetTopic());
         post.setTargetGroup(oldPost.getTargetGroup());
 
         postService.update(post);
@@ -118,7 +122,7 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/topic/{id}")
+    /*@GetMapping("/topic/{id}")
     @Operation(summary = "Get all posts in a topic", tags = {"Posts", "Topic", "Get"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success",
@@ -131,7 +135,7 @@ public class PostController {
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
         return ResponseEntity.ok(postMapper.postToPostDTO(postService.findAllPostsInTopic(id, searching, limiting, offsetting)));
-    }
+    }*/
 
     @GetMapping("/group/{id}")
     @Operation(summary = "Get all posts in a group", tags = {"Posts", "Group", "Get"})
@@ -157,7 +161,7 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
     public ResponseEntity<Collection<PostDTO>> findAllPostsToAUser(Principal principal, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = principal.getName();
+        String userId = "lucas";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
@@ -172,8 +176,8 @@ public class PostController {
                             array = @ArraySchema(schema = @Schema(implementation = PostDTO.class)))),
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
-    public ResponseEntity<Collection<PostDTO>> findAllPostsToAUser( @PathVariable String senderId, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+    public ResponseEntity<Collection<PostDTO>> findAllPostsToAUser(Principal principal, @PathVariable String senderId, @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
+        String userId = "lucas";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
@@ -189,14 +193,14 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
     public ResponseEntity<Collection<PostDTO>> findPostsUserIsSubscribedTo( @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
         return ResponseEntity.ok(postMapper.postToPostDTO(postService.findPostsUserSubscribedTo(userId, searching, limiting, offsetting)));
     }
 
-    @GetMapping("/topic")
+    /*@GetMapping("/topic")
     @Operation(summary = "Get all posts from topics a user is subscribed to", tags = {"Posts", "Topic", "Users", "Get"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Success",
@@ -205,12 +209,12 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
     public ResponseEntity<Collection<PostDTO>> findPostInTopicUserIsSubscribedTo( @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
         return ResponseEntity.ok(postMapper.postToPostDTO(postService.findPostsFromTopicUserIsSubscribedTo(userId, searching, limiting, offsetting)));
-    }
+    }*/
 
     @GetMapping("/group")
     @Operation(summary = "Get all posts from groups a user is subscribed to", tags = {"Posts", "Group", "Users", "Get"})
@@ -221,7 +225,7 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Posts not found", content = @Content)
     })
     public ResponseEntity<Collection<PostDTO>> findPostInGroupUserIsSubscribedTo( @RequestParam Optional<String> search, Optional<Integer> limit, Optional<Integer> offset) {
-        String userId = "9e8ae4c6-7901-4ce3-b562-395fc411e006";
+        String userId = "lucas";
         String searching = search.orElse("").toLowerCase();
         int limiting = limit.orElse(999999999);
         int offsetting = offset.orElse(0);
@@ -240,4 +244,4 @@ public class PostController {
         Post post = postService.findById(id);
         return ResponseEntity.ok(postMapper.postToPostDTO(post.getReplies()));
     }
-}*/
+}

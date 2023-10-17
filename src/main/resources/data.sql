@@ -37,6 +37,14 @@ INSERT INTO Groups (name, description, color, is_private)
 VALUES ( 'Gruppe 2',
         'Dette er gruppe 2 og dette er hvertfall ikke en gøy gruppe',
         '#008B8B', true);
+INSERT INTO Groups (name, description, color, is_private)
+VALUES ( 'JAVA KURS',
+         'FULL STACK JAVA PROGRAM COURSE ON NOROFF ACCELERAATEEEEEEEEEEEE',
+         '#FFFFF', false);
+INSERT INTO Groups (name, description, color, is_private)
+VALUES ( '.Net Kurs',
+         'simsallabim bim muchas gracias aficion, esto es para vosotros suiiiiiiiii',
+         '#008B8B', false);
 
 INSERT INTO group_user ("groups_id", "users_id")
 VALUES (1, 'lucas');
@@ -49,23 +57,33 @@ INSERT INTO group_user ("groups_id", "users_id")
 VALUES (2, '18b14274-4bb2-461f-a293-2941a1b9dea1');
 INSERT INTO group_user ("groups_id", "users_id")
 VALUES (2, 'lucas');
+INSERT INTO group_user ("groups_id", "users_id")
+VALUES (3, 'lucas');
+INSERT INTO group_user ("groups_id", "users_id")
+VALUES (4, 'lucas');-- Post 1
+INSERT INTO Post (created_at, updated_at, post_target, owner_id, origin_id, title, content, group_id)
+VALUES ('2023-04-01 10:15', '2023-04-01', 'TOPIC', 'lucas', 1,
+        'The Art of Typography',
+        'Typography in design is like the notes in a beautiful song - it sets the tone and rhythm of your message.' ||
+        '![typography](https://example.com/typography-image.jpg)', 2);
 
-INSERT INTO Post (owner_id, title, content)
-VALUES ('lucas', 'ChatGPT''s take on UI/UX',
-        'Creating a great UI/UX is like baking the **perfect cake** - you need to mix the right ingredients, layer them with care, and add a touch of flair to make it truly delicious!' ||
-        '![cake](https://del.h-cdn.co/assets/18/06/2560x1280/landscape-1518115142-delish-red-velvet-cake.jpg)');
+-- Post 2
+INSERT INTO Post (created_at, updated_at, post_target, owner_id, origin_id, title, content, group_id)
+VALUES ('2023-04-02 14:45', '2023-04-02', 'TOPIC', 'lucas', 1,
+        'The Colors of UX',
+        'Choosing the right color palette for your user interface is like painting a masterpiece - it evokes emotions and enhances the user experience.' ||
+        '![color palette](https://example.com/color-palette-image.jpg)', 2);
 
-INSERT INTO Post (owner_id, title, content)
-VALUES ('lucas', 'Inspiration',
-        'UI/UX design is like a dance between art and science, where **creativity and logic** work in harmony to create beautiful and functional digital products.' ||
-        '![dancers](https://live.staticflickr.com/4008/4494092068_4db041aa4a_b.jpg)');
+-- Post 3
+INSERT INTO Post (created_at, updated_at, post_target, owner_id, origin_id, title, content, group_id)
+VALUES ('2023-04-03 12:30', '2023-04-03', 'TOPIC', 'lucas', 1,
+        'Simplicity in Design',
+        'Designing with simplicity in mind is like telling a story with few words - it ensures clarity and ease of use.' ||
+        '![simplicity](https://example.com/simplicity-image.jpg)', 2);
 
-INSERT INTO Post (owner_id, title, content)
-VALUES ('lucas', 'Roller coaster',
-        'Designing digital products is like creating a **fun adventure park** for users, complete with exciting rides and easy-to-follow maps.' ||
-        '![rollercoaster](https://img.freepik.com/free-vector/scene-with-roller-coaster-circus_1308-33643.jpg)');
-
-INSERT INTO Post (owner_id, title, content)
-VALUES ('lucas', 'Let''s make Hogwarts great again!',
-        'Creating a user-friendly digital product is like building a **house with secret passages** and hidden treasures - it should be easy to navigate, but also full of delightful surprises.' ||
-        '![hogwarts staircase](https://blockwarts.files.wordpress.com/2022/07/hogwarts-staircase.jpg)');
+-- Post 4
+INSERT INTO Post (created_at, updated_at, post_target, owner_id, origin_id, title, content, group_id)
+VALUES ('2023-04-04 17:20', '2023-04-04', 'TOPIC', 'lucas', 1,
+        'Responsive Web Design',
+        'Creating responsive web designs is like building a flexible house - it adapts to different screen sizes and devices.' ||
+        '![responsive design](https://example.com/responsive-design-image.jpg)', 2);
