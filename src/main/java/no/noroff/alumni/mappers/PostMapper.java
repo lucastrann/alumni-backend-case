@@ -2,17 +2,14 @@ package no.noroff.alumni.mappers;
 
 import no.noroff.alumni.models.Groups;
 import no.noroff.alumni.models.Post;
-import no.noroff.alumni.models.Topic;
 import no.noroff.alumni.models.Users;
 import no.noroff.alumni.models.dto.group.GroupMiniDTO;
 import no.noroff.alumni.models.dto.post.PostDTO;
 import no.noroff.alumni.models.dto.post.PostPostDTO;
 import no.noroff.alumni.models.dto.post.PostPutDTO;
-import no.noroff.alumni.models.dto.topic.TopicMiniDTO;
 import no.noroff.alumni.models.dto.users.SenderDTO;
 import no.noroff.alumni.services.group.GroupService;
 import no.noroff.alumni.services.post.PostService;
-import no.noroff.alumni.services.topic.TopicService;
 import no.noroff.alumni.services.users.UsersService;import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", uses = {UsersService.class, GroupService.class, TopicService.class, PostService.class})
+@Mapper(componentModel = "spring", uses = {UsersService.class, GroupService.class, PostService.class})
 public abstract class PostMapper {
 
     @Autowired
@@ -31,12 +28,9 @@ public abstract class PostMapper {
     @Autowired
     protected GroupService groupService;
     @Autowired
-    protected TopicService topicService;
-    @Autowired
     protected PostService postService;
 
     @Mapping(target = "targetGroup", source = "targetGroup", qualifiedByName = "groupToMiniDTO")
-    @Mapping(target = "targetTopic", source = "targetTopic", qualifiedByName = "topicToMiniDTO")
     @Mapping(target = "targetUser", source = "targetUser", qualifiedByName = "targetUserToSenderDTO")
     @Mapping(target = "senderId", source = "senderId", qualifiedByName = "userToSenderDTO")
     @Mapping(target = "replyParentId", source = "replyParentId.id")
@@ -54,7 +48,6 @@ public abstract class PostMapper {
     @Mapping(target = "replyParentId", source = "replyParentId", qualifiedByName = "parentPostIdToPost")
     @Mapping(target = "targetUser", source = "targetUser", qualifiedByName = "userIdToUser")
     @Mapping(target = "targetGroup", source = "targetGroup", qualifiedByName = "groupIdToGroup")
-    @Mapping(target = "targetTopic", source = "targetTopic", qualifiedByName = "topicIdToTopic")
     public abstract Post postPostDTOToPost(PostPostDTO postPostDTO);
 
     @Named(value = "userToSenderDTO")
@@ -89,15 +82,6 @@ public abstract class PostMapper {
         return miniGroup;
     }
 
-    @Named(value = "topicToMiniDTO")
-    TopicMiniDTO mapMiniTopic(Topic topic){
-        if (topic == null)
-            return null;
-        TopicMiniDTO miniTopic = new TopicMiniDTO();
-        miniTopic.setId(topic.getId());
-        miniTopic.setName(topic.getName());
-        return miniTopic;
-    }
 
     @Named(value = "userIdToUser")
     Users map(String value) {
@@ -112,15 +96,6 @@ public abstract class PostMapper {
     Groups maps(Integer value) {
         try {
             return groupService.findById(value);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    @Named(value = "topicIdToTopic")
-    Topic mapen(Integer value) {
-        try {
-            return topicService.findById(value);
         } catch (Exception e) {
             return null;
         }

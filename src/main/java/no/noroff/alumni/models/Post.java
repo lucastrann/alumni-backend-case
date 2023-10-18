@@ -48,8 +48,6 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Groups targetGroup;
-    @ManyToOne
-    @JoinColumn(name = "topic_id")
-    private Topic targetTopic;
+
 
 }

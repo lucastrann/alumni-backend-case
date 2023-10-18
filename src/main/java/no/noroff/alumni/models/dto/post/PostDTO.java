@@ -3,7 +3,6 @@ package no.noroff.alumni.models.dto.post;
 import lombok.Getter;
 import lombok.Setter;
 import no.noroff.alumni.models.dto.group.GroupMiniDTO;
-import no.noroff.alumni.models.dto.topic.TopicMiniDTO;
 import no.noroff.alumni.models.dto.users.SenderDTO;
 
 import java.util.Set;
@@ -23,5 +22,4 @@ public class PostDTO {
     private Set<Integer> replies;
     private SenderDTO targetUser;
     private GroupMiniDTO targetGroup;
-    private TopicMiniDTO targetTopic;
 }

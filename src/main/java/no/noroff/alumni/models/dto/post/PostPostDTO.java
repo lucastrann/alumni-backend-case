@@ -16,6 +16,5 @@ public class PostPostDTO {
     private List<ReplyDTO> replies;
     private String targetUser;
     private int targetGroup;
-    private int targetTopic;
 
 }
