@@ -27,7 +27,7 @@ VALUES ('lucas',  'Lucas Tran',
         'https://cdn.drawception.com/images/avatars/647493-B9E.png',
         'ARBEIDSLEDIG',
         'LOLLOLOLOLLOLOLOLOLLOL',
-        'FUN FACT ABOUT ME, I HATE THIS FUCKING SHIT');
+        'FUN FACT ABOUT ME');
 
 INSERT INTO Groups ( name, description, color, is_private)
 VALUES ('GRUPPPE 1',
