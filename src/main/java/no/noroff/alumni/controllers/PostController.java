@@ -11,6 +11,7 @@ import no.noroff.alumni.models.Post;
 import no.noroff.alumni.models.dto.post.PostDTO;
 import no.noroff.alumni.models.dto.post.PostPostDTO;
 import no.noroff.alumni.models.dto.post.PostPutDTO;
+import no.noroff.alumni.models.dto.post.ReplyDTO;
 import no.noroff.alumni.services.post.PostService;
 import no.noroff.alumni.services.users.UsersService;
 import org.springframework.http.HttpStatus;
@@ -244,4 +245,41 @@ public class PostController {
         Post post = postService.findById(id);
         return ResponseEntity.ok(postMapper.postToPostDTO(post.getReplies()));
     }
+
+    @PostMapping("/{id}/replies")
+    @Operation(summary = "Add a reply to a post", tags = {"Posts", "Replies", "Post"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Created", content = @Content)
+    })
+    public ResponseEntity<Object> addReplyToPost(
+            @RequestBody String replyContent, // Assuming a simple string for the reply content
+            @PathVariable int id
+    ) {
+        // Load the parent post by postId
+        Post parentPost = postService.findById(id);
+
+        if (parentPost == null) {
+            return ResponseEntity.notFound().build();
+        }
+            // This is a reply to a post
+            // Create a new post for the reply
+            Post replyPost = new Post();
+
+            // Set the reply content and sender ID
+            replyPost.setContent(replyContent);
+            replyPost.setSenderId(parentPost.getSenderId()); // Replace with the appropriate user ID
+
+            // Set the origin and replyParentId for the reply
+            replyPost.setOrigin(parentPost);
+            replyPost.setReplyParentId(parentPost);
+
+            // Add the reply post to the database
+            postService.add(replyPost);
+
+            // Get the ID of the newly created reply post
+            int replyPostId = replyPost.getId();
+
+            URI uri = URI.create("api/v1/post/" + replyPostId);
+            return ResponseEntity.created(uri).body(replyPostId);
+        }
 }
